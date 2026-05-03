@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../cart/cartSlice.js";
 import Swal from "sweetalert2";
+import { baseApi } from "../../app/mainApi.js";
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ export default function CheckoutPage() {
   const token = localStorage.getItem("token");
   const total = items.reduce((sum, item) => sum + item.newprice * item.quantity, 0);
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const apiUrl = (path) => `${baseApi}${path.replace(/^\//, "")}`;
 
   // ✅ redirect if not logged in
   if (!token || !currentUser) {
@@ -21,7 +23,7 @@ export default function CheckoutPage() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("https://bookstore-ggcs.onrender.com/api/orders", {
+      const response = await fetch(apiUrl("orders"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

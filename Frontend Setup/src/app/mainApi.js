@@ -1,14 +1,28 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const base =
-  import.meta.env.VITE_API_BASE_URL ||
-  import.meta.env.VITE_API_BASE ||
-  "https://bookstore-ggcs.onrender.com";
+const normalizeApiBase = (value) => {
+  const trimmed = value.trim().replace(/\/+$/, "");
+  return /\/api$/i.test(trimmed) ? `${trimmed}/` : `${trimmed}/api/`;
+};
 
-const normalizedBase = base.replace(/\/+$/, "");
-const baseApi = /\/api$/i.test(normalizedBase)
-  ? `${normalizedBase}/`
-  : `${normalizedBase}/api/`;
+const resolveApiBase = () => {
+  const configuredBase =
+    import.meta.env.VITE_API_BASE_URL ||
+    import.meta.env.VITE_API_BASE ||
+    import.meta.env.VITE_BACKEND_URL;
+
+  if (configuredBase) {
+    return normalizeApiBase(configuredBase);
+  }
+
+  if (import.meta.env.DEV) {
+    return normalizeApiBase("http://localhost:5000");
+  }
+
+  return normalizeApiBase("https://bookstore-ggcs.onrender.com");
+};
+
+const baseApi = resolveApiBase();
 
 export const mainApi = createApi({
   reducerPath: "mainApi",

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { baseApi } from "../../app/mainApi.js";
 import {
   HiOutlineShoppingBag, HiOutlineUsers, HiOutlineBookOpen,
   HiOutlineCurrencyDollar, HiOutlineChartBar, HiOutlinePencil,
@@ -50,11 +51,13 @@ export default function AdminDashboard() {
 
   const headers = { Authorization: `Bearer ${token}` };
 
+  const apiUrl = (path) => `${baseApi}${path.replace(/^\//, "")}`;
+
   const fetchData = () => {
     Promise.all([
-      fetch("https://bookstore-ggcs.onrender.com/api/orders/all", { headers }).then(r => r.json()),
-      fetch("https://bookstore-ggcs.onrender.com/api/users/all", { headers }).then(r => r.json()),
-      fetch("https://bookstore-ggcs.onrender.com/api/books").then(r => r.json()),
+      fetch(apiUrl("orders/all"), { headers }).then(r => r.json()),
+      fetch(apiUrl("users/all"), { headers }).then(r => r.json()),
+      fetch(apiUrl("books")).then(r => r.json()),
     ]).then(([ordersData, customersData, booksData]) => {
       setOrders(Array.isArray(ordersData) ? ordersData : []);
       setCustomers(Array.isArray(customersData) ? customersData : []);
@@ -65,7 +68,7 @@ export default function AdminDashboard() {
 
   const fetchBooks = async () => {
     try {
-      const res = await fetch("https://bookstore-ggcs.onrender.com/api/books");
+      const res = await fetch(apiUrl("books"));
       const data = await res.json();
       setBooks(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -76,7 +79,7 @@ export default function AdminDashboard() {
   useEffect(() => { fetchData(); }, []);
 
   const updateStatus = async (orderId, status) => {
-    await fetch(`https://bookstore-ggcs.onrender.com/api/orders/${orderId}/status`, {
+    await fetch(apiUrl(`orders/${orderId}/status`), {
       method: "PATCH",
       headers: { ...headers, "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
@@ -85,7 +88,7 @@ export default function AdminDashboard() {
   };
 
   const toggleUserStatus = async (userId) => {
-    const res = await fetch(`https://bookstore-ggcs.onrender.com/api/users/${userId}/toggle-status`, {
+    const res = await fetch(apiUrl(`users/${userId}/toggle-status`), {
       method: "PATCH",
       headers,
     });
@@ -114,7 +117,7 @@ export default function AdminDashboard() {
     
     setIsDeletingBook(true);
     try {
-      const res = await fetch(`https://bookstore-ggcs.onrender.com/api/books/${bookId}`, {
+      const res = await fetch(apiUrl(`books/${bookId}`), {
         method: "DELETE",
         headers,
       });
@@ -170,8 +173,8 @@ export default function AdminDashboard() {
       });
 
       const url = editingBook
-        ? `https://bookstore-ggcs.onrender.com/api/books/${editingBook._id}`
-        : "https://bookstore-ggcs.onrender.com/api/books";
+        ? apiUrl(`books/${editingBook._id}`)
+        : apiUrl("books");
       const method = editingBook ? "PATCH" : "POST";
 
       const res = await fetch(url, { method, headers, body: formData });

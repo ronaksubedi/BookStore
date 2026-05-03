@@ -7,6 +7,7 @@ import { useGetUserProfileQuery, useUpdateUserProfileMutation } from "../auth/us
 import { useDispatch } from "react-redux";
 import { userSlice } from "../auth/userSlice.js";
 import Swal from "sweetalert2";
+import { baseApi } from "../../app/mainApi.js";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -22,10 +23,11 @@ export default function Dashboard() {
   const { data: user, isLoading } = useGetUserProfileQuery();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateUserProfileMutation();
   const { register, handleSubmit } = useForm();
+  const apiUrl = (path) => `${baseApi}${path.replace(/^\//, "")}`;
 
   // ✅ fetch real order count
   useEffect(() => {
-    fetch("https://bookstore-ggcs.onrender.com/api/orders/my-orders", {
+    fetch(apiUrl("orders/my-orders"), {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => res.json())

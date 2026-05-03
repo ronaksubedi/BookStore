@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { baseApi } from "../../app/mainApi.js";
 
 const statusColors = {
   pending: "bg-yellow-100 text-yellow-700",
@@ -13,9 +14,10 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const token = localStorage.getItem("token");
+  const apiUrl = (path) => `${baseApi}${path.replace(/^\//, "")}`;
 
   useEffect(() => {
-    fetch(`https://bookstore-ggcs.onrender.com/api/orders/my-orders`, {
+    fetch(apiUrl("orders/my-orders"), {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => res.json())

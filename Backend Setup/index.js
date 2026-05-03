@@ -28,6 +28,7 @@ const envOrigins = (process.env.FRONTEND_URLS || "")
   .filter(Boolean);
 
 const allowedOriginsSet = new Set([normalizedFrontendUrl, ...envOrigins].filter(Boolean));
+const allowAllOrigins = allowedOriginsSet.size === 0;
 
 if (NODE_ENV !== "production") {
   allowedOriginsSet.add("http://localhost:5173");
@@ -39,6 +40,7 @@ app.use(
     origin: (origin, callback) => {
       // Allow non-browser clients (curl/postman) and same-origin requests.
       if (!origin) return callback(null, true);
+      if (allowAllOrigins) return callback(null, true);
       if (allowedOriginsSet.has(origin)) return callback(null, true);
       return callback(new Error(`CORS blocked for origin: ${origin}`));
     },
