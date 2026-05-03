@@ -106,6 +106,18 @@ export const googleAuth = async (req, res) => {
     });
   } catch (error) {
     console.log("GOOGLE AUTH ERROR:", error?.message || error);
+    const rawMessage = error?.message || "Google sign-in failed";
+
+    if (rawMessage.includes("Firebase Admin is not configured")) {
+      return res.status(500).json({
+        message: "Google auth is not configured on server. Please contact support.",
+      });
+    }
+
+    if (error?.code?.startsWith("auth/")) {
+      return res.status(401).json({ message: "Invalid Google sign-in token" });
+    }
+
     return res.status(401).json({ message: "Invalid Google sign-in" });
   }
 };

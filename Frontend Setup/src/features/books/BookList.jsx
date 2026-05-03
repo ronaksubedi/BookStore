@@ -9,7 +9,7 @@ import BookCard from "../../components/BookCard.jsx";
 const ALL = "category";
 
 export default function BookList() {
-  const { data: books = [], isLoading, isError } = useGetBooksQuery();
+  const { data: books = [], isLoading, isError, error } = useGetBooksQuery();
   
   // ✅ get unique categories from backend data
   const categories = [ALL, ...new Set(books.map((book) => book.category))];
@@ -20,7 +20,10 @@ export default function BookList() {
     : books.filter((book) => book.category === selectedCategory);
 
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Something went wrong.</div>;
+  if (isError) {
+    const errorStatus = error?.status ? ` (status: ${error.status})` : "";
+    return <div>Unable to load books right now{errorStatus}.</div>;
+  }
 
   return (
     <section className="py-10">
