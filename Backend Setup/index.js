@@ -17,7 +17,7 @@ dotenv.config(
 );
 app.use(cors(
   {
-    origin:"https://book-store-gk49.vercel.app/",
+    origin:"https://book-store-smoky-beta.vercel.app/",
     credentials: true
   }
 ));
