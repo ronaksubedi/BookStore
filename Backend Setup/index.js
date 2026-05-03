@@ -15,12 +15,11 @@ dotenv.config(
     quiet: true
   }
 );
-app.use(cors(
-  {
-    origin:"https://book-store-git-main-ronak-subedis-projects.vercel.app/",
-    credentials: true
-  }
-));
+const FRONTEND_URL = process.env.FRONTEND_URL || null;
+app.use(cors({
+  origin: FRONTEND_URL ? FRONTEND_URL : true,
+  credentials: true,
+}));
 app.use(express.json());
 app.use(morgan("dev"));
 
