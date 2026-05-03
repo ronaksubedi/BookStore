@@ -35,3 +35,10 @@ Firebase Console -> Authentication -> Settings -> Authorized domains
 For example, if your app is deployed at `bookstore.ronaksubedi.com.np`, add:
 
 - `bookstore.ronaksubedi.com.np`
+
+## Environment Setup
+
+- Copy `.env.example` to `.env.local` for local development.
+- Set `VITE_API_BASE_URL` to your backend API origin:
+  - local: `http://localhost:5000/api`
+  - production: `https://your-backend-domain/api`
