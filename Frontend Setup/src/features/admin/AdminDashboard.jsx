@@ -52,9 +52,9 @@ export default function AdminDashboard() {
 
   const fetchData = () => {
     Promise.all([
-      fetch("http://localhost:5000/api/orders/all", { headers }).then(r => r.json()),
-      fetch("http://localhost:5000/api/users/all", { headers }).then(r => r.json()),
-      fetch("http://localhost:5000/api/books").then(r => r.json()),
+      fetch("https://bookstore-ggcs.onrender.com/api/orders/all", { headers }).then(r => r.json()),
+      fetch("https://bookstore-ggcs.onrender.com/api/users/all", { headers }).then(r => r.json()),
+      fetch("https://bookstore-ggcs.onrender.com/api/books").then(r => r.json()),
     ]).then(([ordersData, customersData, booksData]) => {
       setOrders(Array.isArray(ordersData) ? ordersData : []);
       setCustomers(Array.isArray(customersData) ? customersData : []);
@@ -65,7 +65,7 @@ export default function AdminDashboard() {
 
   const fetchBooks = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/books");
+      const res = await fetch("https://bookstore-ggcs.onrender.com/api/books");
       const data = await res.json();
       setBooks(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -76,7 +76,7 @@ export default function AdminDashboard() {
   useEffect(() => { fetchData(); }, []);
 
   const updateStatus = async (orderId, status) => {
-    await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+    await fetch(`https://bookstore-ggcs.onrender.com/api/orders/${orderId}/status`, {
       method: "PATCH",
       headers: { ...headers, "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
   };
 
   const toggleUserStatus = async (userId) => {
-    const res = await fetch(`http://localhost:5000/api/users/${userId}/toggle-status`, {
+    const res = await fetch(`https://bookstore-ggcs.onrender.com/api/users/${userId}/toggle-status`, {
       method: "PATCH",
       headers,
     });
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
     
     setIsDeletingBook(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/books/${bookId}`, {
+      const res = await fetch(`https://bookstore-ggcs.onrender.com/api/books/${bookId}`, {
         method: "DELETE",
         headers,
       });
@@ -170,8 +170,8 @@ export default function AdminDashboard() {
       });
 
       const url = editingBook
-        ? `http://localhost:5000/api/books/${editingBook._id}`
-        : "http://localhost:5000/api/books";
+        ? `https://bookstore-ggcs.onrender.com/api/books/${editingBook._id}`
+        : "https://bookstore-ggcs.onrender.com/api/books";
       const method = editingBook ? "PATCH" : "POST";
 
       const res = await fetch(url, { method, headers, body: formData });

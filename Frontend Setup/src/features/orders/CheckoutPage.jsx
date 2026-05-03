@@ -21,7 +21,7 @@ export default function CheckoutPage() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("http://localhost:5000/api/orders", {
+      const response = await fetch("https://bookstore-ggcs.onrender.com/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

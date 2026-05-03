@@ -15,7 +15,7 @@ export default function OrdersPage() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/orders/my-orders", {
+    fetch(`https://bookstore-ggcs.onrender.com/api/orders/my-orders`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => res.json())

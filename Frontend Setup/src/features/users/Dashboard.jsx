@@ -25,7 +25,7 @@ export default function Dashboard() {
 
   // ✅ fetch real order count
   useEffect(() => {
-    fetch("http://localhost:5000/api/orders/my-orders", {
+    fetch("https://bookstore-ggcs.onrender.com/api/orders/my-orders", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => res.json())
