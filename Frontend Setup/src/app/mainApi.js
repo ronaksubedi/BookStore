@@ -11,7 +11,10 @@ const resolveApiBase = () => {
     import.meta.env.VITE_API_BASE ||
     import.meta.env.VITE_BACKEND_URL;
 
-  if (configuredBase) {
+  const isLocalhostBase =
+    typeof configuredBase === "string" && /(^|\/)(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(configuredBase);
+
+  if (configuredBase && (!isLocalhostBase || import.meta.env.DEV)) {
     return normalizeApiBase(configuredBase);
   }
 
