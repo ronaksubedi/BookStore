@@ -36,7 +36,8 @@ const firebasePrivateKeyRaw =
   (getEnv("FIREBASE_PRIVATE_KEY_BASE64", "FIREBASE_PRIVATEKEY_BASE64")
     ? Buffer.from(getEnv("FIREBASE_PRIVATE_KEY_BASE64", "FIREBASE_PRIVATEKEY_BASE64"), "base64").toString("utf8")
     : "") ||
-  getEnv("FIREBASE_PRIVATEKEY");
+  getEnv("FIREBASE_PRIVATEKEY") ||
+  "";
 
 const firebasePrivateKey = firebasePrivateKeyRaw
   .trim()
