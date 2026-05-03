@@ -1,220 +1,193 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { HiOutlineCheckCircle } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
-// ✅ get userId safely
-const getUserId = () => {
-try {
-const user = JSON.parse(localStorage.getItem("user"));
-return user?.\_id || "guest";
-} catch {
-return "guest";
-}
-};
-
-// ✅ get cart based on user
-const getCartFromLocal = () => {
-const userId = getUserId();
-const cart = localStorage.getItem(`cart_${userId}`);
-return cart ? JSON.parse(cart) : [];
-};
-
-// ✅ save cart based on user
-const saveCartToLocal = (items) => {
-const userId = getUserId();
-localStorage.setItem(`cart_${userId}`, JSON.stringify(items));
-};
-
-const cartSlice = createSlice({
-name: "cart",
-initialState: {
-items: getCartFromLocal(),
-},
-
-reducers: {
-loadCart: (state) => {
-state.items = getCartFromLocal();
-},
-addToCart: (state, action) => {
-const existing = state.items.find(item => item.\_id === action.payload.\_id);
-
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        state.items.push({ ...action.payload, quantity: 1 });
-      }
-
-      saveCartToLocal(state.items); // ✅ updated
+export default function AboutPage() {
+  const shellClass = "max-w-6xl mx-auto px-4";
+  const features = [
+    {
+      title: "Wide Selection",
+      description: "Browse thousands of books across all genres and categories."
     },
-
-    removeFromCart: (state, action) => {
-      state.items = state.items.filter(item => item._id !== action.payload);
-      saveCartToLocal(state.items); // ✅ updated
+    {
+      title: "Competitive Prices",
+      description: "Get the best deals and discounts on your favorite books."
     },
-
-    updateQuantity: (state, action) => {
-      const { id, quantity } = action.payload;
-      const item = state.items.find(item => item._id === id);
-
-      if (item) {
-        item.quantity = quantity;
-      }
-
-      saveCartToLocal(state.items); // ✅ updated
+    {
+      title: "Fast Shipping",
+      description: "Free shipping on orders over $50, delivered in 5-7 business days."
     },
+    {
+      title: "Easy Returns",
+      description: "30-day return policy with no questions asked."
+    }
+  ];
 
-    clearCart: (state) => {
-      state.items = [];
-      const userId = getUserId();
-      localStorage.removeItem(`cart_${userId}`); // ✅ updated
+  const team = [
+    {
+      name: "Sarah Johnson",
+      role: "Founder & CEO",
+      image: "👩‍💼"
     },
+    {
+      name: "Michael Chen",
+      role: "Head of Operations",
+      image: "👨‍💼"
+    },
+    {
+      name: "Emily Davis",
+      role: "Customer Service Manager",
+      image: "👩‍💼"
+    },
+    {
+      name: "James Wilson",
+      role: "Tech Director",
+      image: "👨‍💼"
+    }
+  ];
 
-},
-});
-
-export const { addToCart, removeFromCart, updateQuantity, clearCart, loadCart } = cartSlice.actions;
-export default cartSlice.reducer;
-
-cart slice for backup👆
-
-import { useNavigate, Link } from "react-router-dom";
-import { HiOutlineUser, HiOutlineShoppingBag, HiOutlineHeart, HiOutlineCog } from "react-icons/hi";
-import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
-
-export default function Dashboard() {
-const navigate = useNavigate();
-const currentUser = JSON.parse(localStorage.getItem("user") || "null");
-
-// redirect if not logged in
-if (!currentUser) {
-navigate("/login");
-return null;
-}
-
-const handleLogout = () => {
-localStorage.removeItem("token");
-localStorage.removeItem("user");
-navigate("/login");
-};
-
-const stats = [
-{ label: "Total Orders", value: "0", icon: HiOutlineShoppingBag, color: "bg-blue-50 text-blue-600" },
-{ label: "Wishlist", value: "0", icon: HiOutlineHeart, color: "bg-pink-50 text-pink-600" },
-];
-
-const quickLinks = [
-{ name: "My Orders", href: "/orders", desc: "View and track your orders" },
-{ name: "My Cart", href: "/cart", desc: "Items waiting in your cart" },
-{ name: "Checkout", href: "/checkout", desc: "Complete your purchase" },
-];
-
-return (
-
-<div className="min-h-screen bg-gray-50">
-<div className="max-w-5xl mx-auto px-4 py-10">
-
-        {/* Header */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center">
-              <HiOutlineUser className="size-8 text-primary" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-800">{currentUser.fullname}</h1>
-              <p className="text-sm text-gray-500">{currentUser.email}</p>
-              <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium capitalize">
-                {currentUser.role}
-              </span>
+  return (
+    <div className="min-h-screen ">
+      {/* Hero Section */}
+      <div className="py-6 md:py-8">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="bg-linear-to-r from-[#008080] to-[#006666] text-white py-16 md:py-20 rounded-3xl">
+            <div className="text-center px-4">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">About BookStore</h1>
+              <p className="text-lg md:text-xl text-gray-100 max-w-xl mx-auto">
+                Your trusted destination for discovering and purchasing quality books since 2020.
+              </p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 text-sm text-red-500 hover:bg-red-50 px-3 py-2 rounded-lg transition"
-          >
-            <HiOutlineArrowRightOnRectangle className="size-5" />
-            <span className="hidden sm:block">Logout</span>
-          </button>
         </div>
+      </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          {stats.map((stat) => (
-            <div key={stat.label} className="bg-white rounded-2xl shadow-sm p-5 flex items-center gap-4">
-              <div className={`size-12 rounded-xl flex items-center justify-center ${stat.color}`}>
-                <stat.icon className="size-6" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
-                <p className="text-sm text-gray-500">{stat.label}</p>
+      {/* Our Story Section */}
+      <div className="py-16">
+        <div className={shellClass}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
+              <p className="text-gray-600 mb-4 leading-relaxed">
+                BookStore was founded in 2020 with a simple mission: to make quality books accessible to everyone. 
+                We believe that reading opens doors to new worlds, ideas, and possibilities.
+              </p>
+              <p className="text-gray-600 mb-4 leading-relaxed">
+                What started as a small online bookshop has grown into a thriving community of book lovers. 
+                Today, we pride ourselves on offering an extensive collection of books across all genres, 
+                competitive pricing, and exceptional customer service.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                Our team is passionate about connecting readers with the books they love. 
+                We're committed to providing a seamless shopping experience and building lasting relationships with our customers.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <div className="space-y-6">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-[#008080] mb-2">50,000+</div>
+                  <p className="text-gray-600">Books in our catalog</p>
+                </div>
+                <div className="text-center border-t pt-6">
+                  <div className="text-4xl font-bold text-[#008080] mb-2">100,000+</div>
+                  <p className="text-gray-600">Happy customers worldwide</p>
+                </div>
+                <div className="text-center border-t pt-6">
+                  <div className="text-4xl font-bold text-[#008080] mb-2">4.8/5</div>
+                  <p className="text-gray-600">Average customer rating</p>
+                </div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
+      </div>
 
-        {/* Quick Links */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Links</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {quickLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className="border border-gray-100 hover:border-primary hover:bg-primary/5 rounded-xl p-4 transition"
-              >
-                <p className="font-medium text-gray-800 text-sm">{link.name}</p>
-                <p className="text-xs text-gray-500 mt-1">{link.desc}</p>
-              </Link>
+      {/* Why Choose Us */}
+      <div className="bg-white py-16">
+        <div className={shellClass}>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4 text-center">Why Choose BookStore?</h2>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Here's what makes us different from other online bookstores.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="flex gap-4">
+                <HiOutlineCheckCircle className="size-6 text-[#008080] shrink-0 mt-1" />
+                <div>
+                  <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm">{feature.description}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
-
-        {/* Profile Settings */}
-        {/* <div className="bg-white rounded-2xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-            <HiOutlineCog className="size-5" />
-            Profile Settings
-          </h2>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-    <input
-      {...register("fullname")}
-      type="text"
-      defaultValue={user?.fullname}
-      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-primary"
-    />
-  </div>
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-    <input
-      type="email"
-      defaultValue={user?.email}
-      disabled
-      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-gray-50 text-gray-400 cursor-not-allowed"
-    />
-    <p className="text-xs text-gray-400 mt-1">Email cannot be changed</p>
-  </div>
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-    <input
-      {...register("password")}
-      type="password"
-      placeholder="Leave blank to keep current password"
-      className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-primary"
-    />
-  </div>
-  <button
-    type="submit"
-    disabled={isUpdating}
-    className="btn-primary px-6 py-2.5 text-sm disabled:opacity-50"
-  >
-    {isUpdating ? "Saving..." : "Save Changes"}
-  </button>
-</form> */}
-        </div>
-
       </div>
-    // </div>
 
-);
+      {/* Our Values */}
+      <div className="py-16">
+        <div className={shellClass}>
+          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Our Core Values</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-lg shadow-sm p-8 hover:shadow-lg transition">
+              <h3 className="text-2xl font-bold text-[#008080] mb-3">Customer First</h3>
+              <p className="text-gray-600">
+                We put our customers' needs at the center of everything we do. Your satisfaction is our success.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm p-8 hover:shadow-lg transition">
+              <h3 className="text-2xl font-bold text-[#008080] mb-3">Quality</h3>
+              <p className="text-gray-600">
+                We curate our book collection carefully to ensure we offer only quality titles that matter.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm p-8 hover:shadow-lg transition">
+              <h3 className="text-2xl font-bold text-[#008080] mb-3">Integrity</h3>
+              <p className="text-gray-600">
+                We operate with honesty and transparency in all our dealings with customers and partners.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Team Section */}
+      <div className="bg-gray-100 py-16">
+        <div className={shellClass}>
+          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Meet Our Team</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {team.map((member, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-lg transition">
+                <div className="text-6xl mb-4">{member.image}</div>
+                <h3 className="text-lg font-bold text-gray-900 mb-1">{member.name}</h3>
+                <p className="text-sm text-gray-600">{member.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Call to Action */}
+      <div className="bg-linear-to-r from-[#008080] to-[#006666] text-white py-12">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Start Reading?</h2>
+          <p className="text-gray-100 mb-8">
+            Explore our collection of thousands of books and find your next favorite read.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/books"
+              className="bg-white text-[#008080] font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition"
+            >
+              Browse Books
+            </Link>
+            <Link
+              to="/contact"
+              className="border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white/10 transition"
+            >
+              Contact Us
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
-userdashboard👆

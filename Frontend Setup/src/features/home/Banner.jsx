@@ -19,7 +19,7 @@ export default function Banner() {
           <button className="btn-primary">Subscribe</button>
         </div>
 
-      {/* Image — right side */}
+        {/* Image — right side */}
         <div className="w-full md:w-1/2 flex justify-center md:justify-end">
           <img
             src={BannerImg}

@@ -2,6 +2,8 @@ import User from "../models/Users.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
+import { randomBytes } from "crypto";
+import { verifyFirebaseIdToken } from "../utils/firebaseAdmin.js";
 
 export const userLogin = async (req, res) => {
   const errors = validationResult(req);
@@ -52,6 +54,59 @@ export const userRegister = async (req, res) => {
   } catch (error) {
     console.log("REGISTER ERROR:", error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const googleAuth = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return res.status(400).json({ message: "Firebase token is required" });
+    }
+
+    const decoded = await verifyFirebaseIdToken(idToken);
+    const email = decoded.email;
+    const fullname = decoded.name || decoded.email?.split("@")[0] || "Google User";
+
+    if (!email) {
+      return res.status(400).json({ message: "Google account email is required" });
+    }
+
+    let user = await User.findOne({ email });
+    let isNewUser = false;
+
+    if (!user) {
+      const randomPassword = randomBytes(32).toString("hex");
+      const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+      user = await User.create({
+        fullname,
+        email,
+        password: hashedPassword,
+        authProvider: "google",
+      });
+
+      isNewUser = true;
+    } else if (!user.isActive) {
+      return res.status(403).json({ message: "Your account has been deactivated. Please contact admin." });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET || "secretkey",
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
+      message: isNewUser ? "Google account created successfully" : "Google login successful",
+      token,
+      isNewUser,
+      user: { id: user._id, email: user.email, fullname: user.fullname, role: user.role },
+    });
+  } catch (error) {
+    console.log("GOOGLE AUTH ERROR:", error?.message || error);
+    return res.status(401).json({ message: "Invalid Google sign-in" });
   }
 };
 

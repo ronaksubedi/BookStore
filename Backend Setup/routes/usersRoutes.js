@@ -1,5 +1,5 @@
 import express from "express";
-import { userLogin, userRegister, getUserProfile, updateUserProfile, getAllUsers, toggleUserStatus } from "../controllers/userController.js";
+import { userLogin, userRegister, googleAuth, getUserProfile, updateUserProfile, getAllUsers, toggleUserStatus } from "../controllers/userController.js";
 import { body } from "express-validator";
 import upload from "../middlewares/upload.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
@@ -21,6 +21,8 @@ router.route("/register").post(
   body("password").isLength({ min: 6 }),
   userRegister
 );
+
+router.route("/google-auth").post(googleAuth);
 
 // ✅ protected routes
 router.route("/profile").get(verifyToken, getUserProfile);

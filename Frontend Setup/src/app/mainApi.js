@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const base = import.meta.env.VITE_API_BASE || 'https://bookstore-ggcs.onrender.com';
-const baseApi = `${base.replace(/\/+$/,'')}/api/`;
+const base = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE || "https://bookstore-ggcs.onrender.com";
+const baseApi = `${base.replace(/\/+$/, "")}/api/`;
+
 export const mainApi = createApi({
   reducerPath: "mainApi",
   baseQuery: fetchBaseQuery({
@@ -13,4 +14,6 @@ export const mainApi = createApi({
     }),
   }),
 
-})
+});
+
+export { baseApi };

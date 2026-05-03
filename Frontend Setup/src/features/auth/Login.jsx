@@ -8,9 +8,12 @@ import { useDispatch } from "react-redux";
 import { userSlice } from "./userSlice.js";
 import { loadUserCart } from "../cart/cartSlice.js";
 import Swal from "sweetalert2";
+import { signInWithGoogle } from "./firebaseAuth.js";
+import { baseApi } from "../../app/mainApi.js";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const navigate = useNavigate();
@@ -31,6 +34,35 @@ export default function Login() {
       navigate("/");
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      setIsGoogleLoading(true);
+      const { idToken } = await signInWithGoogle();
+      const response = await fetch(`${baseApi}users/google-auth`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data?.message || "Google login failed");
+      }
+
+      localStorage.setItem("token", data.token);
+      dispatch(userSlice.actions.setUser(data.user));
+      dispatch(loadUserCart(data.user.id));
+      Swal.fire("Success", data.isNewUser ? "Google account created successfully!" : "Google login successful!", "success");
+      navigate("/");
+    } catch (err) {
+      Swal.fire("Error", err.message || "Google login failed", "error");
+    } finally {
+      setIsGoogleLoading(false);
     }
   };
 
@@ -90,10 +122,12 @@ export default function Login() {
               </button>
               <button
                 type="button"
+                onClick={handleGoogleLogin}
+                disabled={isGoogleLoading}
                 className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50 text-primary font-medium py-2.5 rounded-lg transition text-sm"
               >
                 <FcGoogle size={18} />
-                Continue with Google
+                {isGoogleLoading ? "Signing in..." : "Continue with Google"}
               </button>
               <p className="text-center text-sm text-gray-500">
                 Don't have an account?{" "}

@@ -2,6 +2,7 @@ import { HiOutlineCheckCircle } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 
 export default function AboutPage() {
+  const shellClass = "max-w-6xl mx-auto px-4";
   const features = [
     {
       title: "Wide Selection",
@@ -45,20 +46,25 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-linear-to-r from-[#008080] to-[#006666] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">About BookStore</h1>
-          <p className="text-xl text-gray-100 max-w-2xl mx-auto">
-            Your trusted destination for discovering and purchasing quality books since 2020.
-          </p>
+    <div className="w-full py-12 md:py-20">
+      <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex items-center justify-between gap-6">
+        {/* Hero Section */}
+      <div className=" w-full ">
+        <div className="max-w-full px-0">
+          <div className="bg-linear-to-r from-[#008080] to-[#006666] text-white py-16 md:py-20 rounded-3xl">
+            <div className="text-center w-full">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">About BookStore</h1>
+              <p className="text-lg md:text-xl text-gray-100 max-w-xl mx-auto">
+                Your trusted destination for discovering and purchasing quality books since 2020.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Our Story Section */}
-      <div className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="w-full py-16">
+        <div className={shellClass}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
@@ -97,8 +103,8 @@ export default function AboutPage() {
       </div>
 
       {/* Why Choose Us */}
-      <div className="bg-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="w-fullbg-white py-16">
+        <div className={shellClass}>
           <h2 className="text-4xl font-bold text-gray-900 mb-4 text-center">Why Choose BookStore?</h2>
           <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
             Here's what makes us different from other online bookstores.
@@ -118,8 +124,8 @@ export default function AboutPage() {
       </div>
 
       {/* Our Values */}
-      <div className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="w-full py-16">
+        <div className={shellClass}>
           <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Our Core Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg shadow-sm p-8 hover:shadow-lg transition">
@@ -145,8 +151,8 @@ export default function AboutPage() {
       </div>
 
       {/* Team Section */}
-      <div className="bg-gray-100 py-16">
-        <div className="max-w-7xl mx-auto px-4">
+      <div className="w-fullbg-gray-100 py-16">
+        <div className={shellClass}>
           <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Meet Our Team</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {team.map((member, index) => (
@@ -161,7 +167,7 @@ export default function AboutPage() {
       </div>
 
       {/* Call to Action */}
-      <div className="bg-linear-to-r from-[#008080] to-[#006666] text-white py-12">
+      <div className="bg-linear-to-r from-[#008080] to-[#006666] rounded-2xl text-white py-12">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Start Reading?</h2>
           <p className="text-gray-100 mb-8">
@@ -182,6 +188,7 @@ export default function AboutPage() {
             </Link>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
