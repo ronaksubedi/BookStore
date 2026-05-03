@@ -17,7 +17,7 @@ dotenv.config(
 );
 app.use(cors(
   {
-    origin:"https://book-store-smoky-beta.vercel.app/",
+    origin:"https://book-store-git-main-ronak-subedis-projects.vercel.app/",
     credentials: true
   }
 ));
