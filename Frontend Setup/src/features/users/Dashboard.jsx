@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { userSlice } from "../auth/userSlice.js";
 import Swal from "sweetalert2";
 import { baseApi } from "../../app/mainApi.js";
+import DashboardSkeleton from "../../components/DashboardSkeleton.jsx";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function Dashboard() {
     }
   };
 
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (isLoading) return <DashboardSkeleton />;
 
   // count by status
   const orderStats = {

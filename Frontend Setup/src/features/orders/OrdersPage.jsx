@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { baseApi } from "../../app/mainApi.js";
+import OrdersPageSkeleton from "../../components/OrdersPageSkeleton.jsx";
 
 const statusColors = {
   pending: "bg-yellow-100 text-yellow-700",
@@ -25,7 +26,7 @@ export default function OrdersPage() {
       .catch(() => setIsLoading(false));
   }, []);
 
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (isLoading) return <OrdersPageSkeleton />;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">

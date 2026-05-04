@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity, clearCart } from "./cartSlice.js";
 import { Link } from "react-router-dom";
 import { FiTrash2 } from "react-icons/fi";
+import CartPageSkeleton from "../../components/CartPageSkeleton.jsx";
 
 export default function CartPage() {
   const dispatch = useDispatch();

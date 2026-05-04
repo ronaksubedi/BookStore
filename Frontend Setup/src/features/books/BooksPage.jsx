@@ -3,6 +3,7 @@ import { useGetBooksQuery, useSearchBooksQuery } from "./bookApi.js";
 import { Link, useSearchParams } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import BookCard from "../../components/BookCard.jsx";
+import BookGridSkeleton from "../../components/BookGridSkeleton.jsx";
 
 const ALL = "All Categories";
 
@@ -30,9 +31,16 @@ export default function BooksPage() {
 
   if (loadingBooks && !allBooks.length) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <p className="text-gray-600 text-lg">Loading books...</p>
+      <div className="bg-gray-50 min-h-screen py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="mb-12">
+            <div className="h-10 bg-gray-300 rounded w-64 mb-2 animate-pulse"></div>
+            <div className="h-5 bg-gray-300 rounded w-96 animate-pulse"></div>
+          </div>
+          <div className="mb-8 animate-pulse">
+            <div className="h-10 bg-gray-300 rounded w-full"></div>
+          </div>
+          <BookGridSkeleton />
         </div>
       </div>
     );

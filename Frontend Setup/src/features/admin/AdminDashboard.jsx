@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { baseApi } from "../../app/mainApi.js";
+import AdminDashboardSkeleton from "../../components/AdminDashboardSkeleton.jsx";
 import {
   HiOutlineShoppingBag, HiOutlineUsers, HiOutlineBookOpen,
   HiOutlineCurrencyDollar, HiOutlineChartBar, HiOutlinePencil,
@@ -204,7 +205,7 @@ export default function AdminDashboard() {
     { label: "Books", value: books.length, icon: HiOutlineBookOpen, color: "bg-orange-50 text-orange-600" },
   ];
 
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (isLoading) return <AdminDashboardSkeleton />;
 
   return (
     <div className="min-h-screen bg-gray-50">

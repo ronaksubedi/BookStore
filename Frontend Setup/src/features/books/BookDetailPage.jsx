@@ -6,6 +6,7 @@ import { FiShoppingCart, FiArrowLeft } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../cart/cartSlice.js";
 import Swal from "sweetalert2";
+import BookDetailPageSkeleton from "../../components/BookDetailPageSkeleton.jsx";
 
 export default function BookDetailPage() {
   const { id } = useParams();
@@ -24,13 +25,7 @@ export default function BookDetailPage() {
     }
   }, [id, refetch]);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-[70vh] flex items-center justify-center bg-gray-50">
-        <p className="text-gray-600">Loading book details...</p>
-      </div>
-    );
-  }
+  if (isLoading) return <BookDetailPageSkeleton />;
 
   if (isError || !book) {
     return (

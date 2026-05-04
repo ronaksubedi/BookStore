@@ -5,6 +5,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import BookCard from "../../components/BookCard.jsx";
+import BookSwiperSkeleton from "../../components/BookSwiperSkeleton.jsx";
 
 const ALL = "category";
 
@@ -19,7 +20,7 @@ export default function BookList() {
     ? books
     : books.filter((book) => book.category === selectedCategory);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <BookSwiperSkeleton />;
   if (isError) {
     const errorStatus = error?.status ? ` (status: ${error.status})` : "";
     return <div>Unable to load books right now{errorStatus}.</div>;

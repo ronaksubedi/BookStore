@@ -1,13 +1,16 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { clearCart } from "../cart/cartSlice.js";
 import Swal from "sweetalert2";
 import { baseApi } from "../../app/mainApi.js";
+import CheckoutPageSkeleton from "../../components/CheckoutPageSkeleton.jsx";
 
 export default function CheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const items = useSelector(state => state.cart.items);
   const currentUser = useSelector(state => state.user.user);
   const token = localStorage.getItem("token");
@@ -22,6 +25,7 @@ export default function CheckoutPage() {
   }
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       const response = await fetch(apiUrl("orders"), {
         method: "POST",
@@ -56,6 +60,8 @@ export default function CheckoutPage() {
     } catch (err) {
       console.error(err);
       Swal.fire("Error", "An error occurred. Please try again.", "error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -111,8 +117,8 @@ export default function CheckoutPage() {
           <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-600">
             💵 Payment: Cash on Delivery
           </div>
-          <button type="submit" className="btn-primary w-full py-3 text-sm">
-            Place Order
+          <button type="submit" disabled={isSubmitting} className="btn-primary w-full py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+            {isSubmitting ? "Processing..." : "Place Order"}
           </button>
         </form>
       </div>
