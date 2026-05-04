@@ -96,7 +96,7 @@ export default function BooksPage() {
             {filteredBooks.map((book) => (
               <Link key={book._id} to={`/books/${book._id}`} className="group">
                 <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 h-full overflow-hidden flex flex-col">
-                  <div className="relative aspect-[3/4] bg-gray-200 overflow-hidden">
+                  <div className="relative aspect-3/4 bg-gray-200 overflow-hidden">
                     <img
                       src={book.coverImage}
                       alt={book.title}
