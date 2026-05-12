@@ -16,7 +16,7 @@ export default function BookCard({ book }) {
   const currentUser = useSelector(state => state.user.user);
 
   const isLong = book?.description?.length > 60;
-  const displayDesc = expanded ? book?.description : book?.description?.slice(0, 50);
+  const displayDesc = expanded ? book?.description : book?.description?.slice(0, 100);
 
   const handleRate = async (star) => {
     let userId = localStorage.getItem("userId");
@@ -72,7 +72,7 @@ export default function BookCard({ book }) {
                 size={14}
                 className={`cursor-pointer transition-colors ${
                   star <= (hoveredStar || Math.round(book?.rating || 0))
-                    ? "text-yellow-400"
+                    ? "text-blue-400"
                     : "text-gray-300"
                 }`}
                 onMouseEnter={() => setHoveredStar(star)}
@@ -107,7 +107,7 @@ export default function BookCard({ book }) {
             className="btn-primary px-3 py-1.5 sm:px-4 sm:py-2 flex items-center gap-1.5 w-fit text-xs sm:text-sm"
           >
             <FiShoppingCart size={12} />
-            <span>Add to Basket</span>
+            <span>Add to Cart</span>
           </button>
         </div>
       </div>
