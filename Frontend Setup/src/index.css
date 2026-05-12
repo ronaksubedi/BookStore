@@ -7,11 +7,11 @@
 
 
 @theme {
-  --color-primary: #008080;
-  --color-hover: #004c4c;
+  --color-primary: #7c3aed;
+  --color-hover: #4c1d95;
   --color-secondary: #0D0842;
-  --font-primary: 'Nunito Sans', sans-serif;
-  --font-secondary: 'Montserrat', sans-serif;
+  --font-primary: 'Montserrat', sans-serif;
+  --font-secondary: 'Nunito Sans', sans-serif;
 }
 
 body {
@@ -92,7 +92,7 @@ body {
 }
 
 .btn-primary {
-  background-color: #008080;
+  background-color: #7c3aed;
   color: #FFF;
   padding: 8px 24px;
   border-radius: 6px;
@@ -107,7 +107,7 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: #004c4c;
+  background-color: #4c1d95;
   color: rgb(255, 255, 255);
 }
 
